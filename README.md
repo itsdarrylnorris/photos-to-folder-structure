@@ -1,13 +1,13 @@
 <h1 align="center">Photos To Folder Structure</h3>
-<h3 align="center"> Opinionated Folder Structure For Photos App Export </h3>
+<h3 align="center">Opinionated Folder Structure For Photos App Export </h3>
 
 <p align="center">
-  <em> Cameras: GoPros · iPhones · Sony</em>
+  <em> Cameras: GoPro · iPhone · Sony</em>
 </p>
 
 ## Intro
 
-**Photos To Folder Structure** is an opinionated folder structure to organize your media after exporting from the Photos app. It uses the default file format figure how the location on how to storage.
+**Photos To Folder Structure** is an opinionated folder structure to organize your media after exporting from the Photos app. It uses the file name to determine the folder structure.
 
 - It changes the files from a flat structure
   ![From](/documentation/from.png)
@@ -17,14 +17,14 @@
 
 ## Background
 
-For many years, I used the Photos apps to organize all my media and browsers around my media. However, I ran into many issues, and I have decided to move away from the Photos app. Here is the list of the problems I ran into:
+For many years, I used the Photos apps to organize all my media and browse my media. However, I ran into many issues, and I have decided to move away from the Photos app. Here is the list of the problems I ran into:
 
-- **Backing up solutions:** The photos app works very well with iCloud to backup all your content. However, iCloud does not support more than 2TB worth of content, and it can only sync up with Apple products. In theory, I can just backup the entire Photos app, but this adds like 30% more storage, and it has a lot of unnecessary data, and I ran into issues trying to sync up all this data. Most importantly, if I make changes across multiple files, this will affect the Photo app database, which makes data syncing take a lot longer than it should be.
+- **Backing up solutions:** The photos app works very well with iCloud to backup all your content. However, iCloud does not support more than 2TB worth of content, and it can only sync up with Apple products. In theory, I can just backup the entire Photos app, but this adds like 30% more storage, and it has a lot of unnecessary data. Storing a 2TB + blob can take a really long time and introduce issues. Lastly, when making changes to the Photos app, this can change the file structure and update the photos app database, which can take longer to backup data.
 
 - **Unsupported Formats:** I recently purchased a Sony A7IV, and they do not fully support the Sony A7IV photos/ videos formats.
 
 ## Requirements:
-
+- Git
 - Mac
 - Node & NPM
 
@@ -51,7 +51,7 @@ touch .env
 ##
 # Directory Path - Where the files export it's going to be.
 ##
-DIRECTORY_PATH="/Users/darrylnorris/Desktop/test-photos"
+DIRECTORY_PATH="/Users/<USERNAME>/Media/Export"
 
 # iPhone Support
 IPHONE_VIDEOS_FILES_STRUCTURE="IPhone/Photos"
@@ -71,6 +71,6 @@ SONY_PHOTOS_FILE_STRUCTURE="Sony A7IV/Photos"
 SONY_XML_FILE_STRUCTURE="Sony A7IV/XML"
 
 ```
-
+- Update the environment variable `DIRECTORY_PATH` to directory of the folder where you export your data.
 - [Optional] You can change the structure of the folder by modifying those formats.
 - Run the script `node index.js`
