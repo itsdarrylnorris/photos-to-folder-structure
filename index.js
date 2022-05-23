@@ -15,6 +15,7 @@ const GoproVideoFileStructure = process?.env?.GOPRO_VIDEO_FILE_STRUCTURE
 const GoproPhotosFileStructure = process?.env?.GOPRO_PHOTOS_FILE_STRUCTURE
 const SonyVideoFileStructure = process?.env?.SONY_VIDEO_FILE_STRUCTURE
 const SonyPhotosFileStructure = process?.env?.SONY_PHOTOS_FILE_STRUCTURE
+const SonyXmlFileStructure = process?.env?.SONY_XML_FILE_STRUCTURE
 const ScreenRecording = 'ScreenRecording'
 
 /**
@@ -193,15 +194,27 @@ let createSubFolderStructure = async () => {
         // This means it's from the Sony camera.
         else if (
           individualFile.toLowerCase().includes('.arw') ||
-          (individualFile.toLowerCase().includes('.xml') && individualFile.toLowerCase().includes('C0'))(
-            individualFile.toLowerCase().includes('.mp4') && individualFile.toLowerCase().includes('C0'),
-          )
+          (individualFile.toLowerCase().includes('.mp4') && individualFile.toLowerCase().includes('C0')) ||
+          (individualFile.toLowerCase().includes('.xml') && individualFile.toLowerCase().includes('C0')) ||
+          (individualFile.toLowerCase().includes('.jpg') && individualFile.toLowerCase().includes('C0'))
         ) {
           if (individualFile.toLowerCase().includes('.mp4')) {
             if (SonyVideoFileStructure) {
               await moveMediaFile(sourceFile, `${basePath}/${SonyVideoFileStructure}/${individualFile}`)
             } else {
               console.error('[createSubFolderStructure] Missing SonyVideoFileStructure')
+            }
+          } else if (individualFile.toLowerCase().includes('.jpg') || individualFile.toLowerCase().includes('.arw')) {
+            if (SonyPhotosFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${SonyPhotosFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing SonyPhotosFileStructure')
+            }
+          } else if (individualFile.toLowerCase().includes('.xml')) {
+            if (SonyXmlFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${SonyXmlFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing SonyXmlFileStructure')
             }
           }
         } // This could be also, from any mac file but for now it's added as iPhone Photos.
