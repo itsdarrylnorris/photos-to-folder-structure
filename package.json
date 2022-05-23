@@ -1,0 +1,21 @@
+{
+  "name": "photos-to-structure",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.11.2",
+    "dotenv": "^16.0.1",
+    "exif": "^0.6.0",
+    "get-video-dimensions": "^1.0.0",
+    "make-dir": "^3.1.0",
+    "move-file": "^3.0.0",
+    "node-dir": "^0.1.17"
+  }
+}
