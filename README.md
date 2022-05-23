@@ -1,5 +1,5 @@
 <h1 align="center">Photos To Folder Structure</h3>
-<h3 align="center"> Opinionated Folder Structure From Mac Export </h3>
+<h3 align="center"> Opinionated Folder Structure For Photos App Export </h3>
 
 <p align="center">
   <em> Cameras: GoPros · iPhones · Sony</em>
