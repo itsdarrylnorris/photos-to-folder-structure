@@ -47,7 +47,7 @@ touch .env
 
 - Add these enviroment variables to your folder:
 
-```
+```bash
 ##
 # Directory Path - Where the files export it's going to be.
 ##
