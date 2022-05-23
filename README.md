@@ -9,6 +9,12 @@
 
 **Photos To Folder Structure** is an opinionated folder structure to organize your media after exporting from the Photos app. It uses the default file format figure how the location on how to storage.
 
+- It changes the files from a flat structure
+  ![From](/documentation/from.png)
+
+- To a well structure folder, which you can modify before running the script.
+  ![To](/documentation/to.png)
+
 ## Background
 
 For many years, I used the Photos apps to organize all my media and browsers around my media. However, I ran into many issues, and I have decided to move away from the Photos app. Here is the list of the problems I ran into:
