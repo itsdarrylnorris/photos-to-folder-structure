@@ -5,6 +5,7 @@ import makeDir from 'make-dir'
 import { moveFile } from 'move-file'
 import 'dotenv/config'
 
+// Exporting all variables.
 const directoryPath = process?.env?.DIRECTORY_PATH
 const iPhoneVideoFileStructure = process?.env?.IPHONE_VIDEOS_FILES_STRUCTURE
 const iPhonePhotoFileStructure = process?.env?.IPHONE_PHOTOS_FILES_STRUCTURE
@@ -12,6 +13,8 @@ const DroneVideoFileStructure = process?.env?.DRONE_VIDEO_FILE_STRUCTURE
 const DronePhotosFileStructure = process?.env?.DRONE_PHOTOS_FILE_STRUCTURE
 const GoproVideoFileStructure = process?.env?.GOPRO_VIDEO_FILE_STRUCTURE
 const GoproPhotosFileStructure = process?.env?.GOPRO_PHOTOS_FILE_STRUCTURE
+const SonyVideoFileStructure = process?.env?.SONY_VIDEO_FILE_STRUCTURE
+const SonyPhotosFileStructure = process?.env?.SONY_PHOTOS_FILE_STRUCTURE
 const ScreenRecording = 'ScreenRecording'
 
 /**
@@ -94,13 +97,15 @@ let moveMediaFile = async (source, destination) => {
   }
 }
 
+/**
+ * Checks the file name, create the folder structure if needed, and move the file into it.
+ */
 let createSubFolderStructure = async () => {
   try {
     const filesInDirectory = await getFilesInADirectory(directoryPath)
 
     for (const key in filesInDirectory) {
       let fileInDirectory = filesInDirectory[key]
-
       let subFiles = await getFilesInADirectory(`${directoryPath}/${fileInDirectory}`)
 
       for (const subFileKey in subFiles) {
@@ -121,18 +126,35 @@ let createSubFolderStructure = async () => {
         // This means it's from the drone.
         else if (individualFile.toLowerCase().includes('dji_')) {
           if (individualFile.toLowerCase().includes('.mp4')) {
-            await moveMediaFile(sourceFile, `${basePath}/${DroneVideoFileStructure}/${individualFile}`)
+            if (DroneVideoFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${DroneVideoFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing DroneVideoFileStructure')
+            }
           } else if (individualFile.toLowerCase().includes('.jpg')) {
-            await moveMediaFile(sourceFile, `${basePath}/${DronePhotosFileStructure}/${individualFile}`)
+            if (DronePhotosFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${DronePhotosFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing DronePhotosFileStructure')
+            }
           }
         }
 
         // This means it's from GoPRO
+        // @TODO: Support more GOPRO files?
         else if (individualFile.includes('G00') || individualFile.includes('GOPR0') || individualFile.includes('GX')) {
           if (individualFile.toLowerCase().includes('.mp4')) {
-            await moveMediaFile(sourceFile, `${basePath}/${GoproVideoFileStructure}/${individualFile}`)
+            if (GoproVideoFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${GoproVideoFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing GoproVideoFileStructure')
+            }
           } else if (individualFile.toLowerCase().includes('.jpg')) {
-            await moveMediaFile(sourceFile, `${basePath}/${GoproPhotosFileStructure}/${individualFile}`)
+            if (GoproPhotosFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${GoproPhotosFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing GoproPhotosFileStructure')
+            }
           }
         }
 
@@ -140,22 +162,50 @@ let createSubFolderStructure = async () => {
         else if (individualFile.includes('IMG_') || individualFile.includes('APC_')) {
           // This means it's an iPhone videos.
           if (individualFile.toLowerCase().includes('.mov')) {
-            await moveMediaFile(sourceFile, `${basePath}/${iPhoneVideoFileStructure}/${individualFile}`)
+            if (iPhoneVideoFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${iPhoneVideoFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing iPhoneVideoFileStructure')
+            }
           }
 
-          // It means it's a iPhone photo
+          // It means it's a iPhone photos. Technically .dng it's an adobe format but it's fine but it could also be AppleRaw
           else if (
             individualFile.toLowerCase().includes('.heic') ||
             individualFile.toLowerCase().includes('.jpg') ||
             individualFile.toLowerCase().includes('.jpeg') ||
             individualFile.toLowerCase().includes('.dng')
           ) {
-            await moveMediaFile(sourceFile, `${basePath}/${iPhonePhotoFileStructure}/${individualFile}`)
+            if (iPhonePhotoFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${iPhonePhotoFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing iPhonePhotoFileStructure')
+            }
           } else if (individualFile.toLowerCase().includes('.mp4')) {
-            await moveMediaFile(sourceFile, `${basePath}/${iPhoneVideoFileStructure}/${individualFile}`)
+            if (iPhoneVideoFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${iPhoneVideoFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing iPhoneVideoFileStructure')
+            }
           }
         }
-        if (individualFile.toLowerCase().includes('.mov')) {
+
+        // This means it's from the Sony camera.
+        else if (
+          individualFile.toLowerCase().includes('.arw') ||
+          (individualFile.toLowerCase().includes('.xml') && individualFile.toLowerCase().includes('C0'))(
+            individualFile.toLowerCase().includes('.mp4') && individualFile.toLowerCase().includes('C0'),
+          )
+        ) {
+          if (individualFile.toLowerCase().includes('.mp4')) {
+            if (SonyVideoFileStructure) {
+              await moveMediaFile(sourceFile, `${basePath}/${SonyVideoFileStructure}/${individualFile}`)
+            } else {
+              console.error('[createSubFolderStructure] Missing SonyVideoFileStructure')
+            }
+          }
+        } // This could be also, from any mac file but for now it's added as iPhone Photos.
+        else if (individualFile.toLowerCase().includes('.mov')) {
           await moveMediaFile(sourceFile, `${basePath}/${iPhoneVideoFileStructure}/${individualFile}`)
         } else {
           console.log('[createSubFolderStructure] Unknown File', sourceFile)
